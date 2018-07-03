@@ -1,7 +1,7 @@
 version: "2"
 services:
-  elk-poc-elasticsearch-service:
-    image: elk-poc-elasticsearch:latest
+  elasticsearch-service:
+    image: elasticsearch:latest
     environment:
       - http.host=0.0.0.0
       - transport.host=127.0.0.1
@@ -20,39 +20,30 @@ services:
     networks:
       - stack
 
-  elk-poc-logstash-service:
-    image: elk-poc-logstash:latest
+  logstash-service:
+    image: logstash:latest
     environment:
       - xpack.monitoring.enabled=false
     depends_on:
-      - elk-poc-elasticsearch-service
+      - elasticsearch-service
     networks:
       - stack
 
-  elk-poc-apache-service:
-    image: elk-poc-filebeat-apache:latest
-    ports:
-      - "127.0.0.1:80:80"
+  filebeat-service:
+    image: filebeat:latest
     networks:
       - stack
     depends_on:
-      - elk-poc-logstash-service
+      - logstash-service
 
-  elk-poc-kibana-service:
-    image: elk-poc-kibana:latest
+  kibana-service:
+    image: kibana:latest
     ports:
-      - "127.0.0.1:5601:5601"
+      - "5601:5601"
     networks:
       - stack
     depends_on:
       - elk-poc-elasticsearch-service
-
-volumes:
-  esdata:
-    driver: local
-
-networks:
-  stack:
 
 volumes:
   esdata:
