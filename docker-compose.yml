@@ -31,10 +31,19 @@ services:
 
   filebeat-service:
     image: filebeat:latest
+    volumes:
+      - /var/log/filebeat:/var/log/filebeat
     networks:
       - stack
     depends_on:
       - logstash-service
+
+  spring-petclinic:
+    image: spring-petclinic:latest
+    volumes:
+      - /var/log/filebeat:/var/log/filebeat
+    networks:
+      - stack
 
   kibana-service:
     image: kibana:latest
@@ -43,7 +52,7 @@ services:
     networks:
       - stack
     depends_on:
-      - elk-poc-elasticsearch-service
+      - elasticsearch-service
 
 volumes:
   esdata:
