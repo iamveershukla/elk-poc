@@ -22,6 +22,10 @@ services:
 
   logstash-service:
     image: logstash:latest
+    volumes:
+      - /var/log/logstash:/var/log/logstash
+    ports:
+      - 5043:5043
     environment:
       - xpack.monitoring.enabled=false
     depends_on:
@@ -29,21 +33,22 @@ services:
     networks:
       - stack
 
+  spring-petclinic:
+    image: spring-petclinic:latest
+    volumes:
+      - /var/log/petclinic:/var/log/petclinic
+    networks:
+      - stack
+
   filebeat-service:
     image: filebeat:latest
     volumes:
-      - /var/log/filebeat:/var/log/filebeat
+      - /var/log/petclinic:/var/log/petclinic
     networks:
       - stack
     depends_on:
       - logstash-service
-
-  spring-petclinic:
-    image: spring-petclinic:latest
-    volumes:
-      - /var/log/filebeat:/var/log/filebeat
-    networks:
-      - stack
+      - spring-petclinic
 
   kibana-service:
     image: kibana:latest
