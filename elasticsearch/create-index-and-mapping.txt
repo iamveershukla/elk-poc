@@ -1,0 +1,29 @@
+PUT elk-poc
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 5, 
+            "number_of_replicas" : 0
+        }
+    }
+}
+
+PUT elk-poc 
+{
+  "mappings": {
+    "petclinic-logs": { 
+      "properties": { 
+        "year":           { "type": "text"  }, 
+        "logmessage":     { "type": "text"  }, 
+        "number":         { "type": "integer" },
+        "month":          { "type": "text"  }, 
+        "classname":      { "type": "text"  }, 
+        "loglevel":       { "type": "text" },
+        "time":           { "type": "text"  }, 
+        "day":            { "type": "text"  }, 
+        "timestamp":      { "type": "text" }
+      }
+    }
+  }
+}
+

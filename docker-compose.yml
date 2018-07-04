@@ -35,6 +35,8 @@ services:
 
   spring-petclinic:
     image: spring-petclinic:latest
+    ports:
+      - 8085:8085
     volumes:
       - /var/log/petclinic:/var/log/petclinic
     networks:
