@@ -33,15 +33,6 @@ services:
     networks:
       - stack
 
-  spring-petclinic:
-    image: spring-petclinic:latest
-    ports:
-      - 8085:8085
-    volumes:
-      - /var/log/petclinic:/var/log/petclinic
-    networks:
-      - stack
-
   filebeat-service:
     image: filebeat:latest
     volumes:
@@ -50,7 +41,17 @@ services:
       - stack
     depends_on:
       - logstash-service
-      - spring-petclinic
+
+  metricbeat-system-service:
+    image: metricbeat-system:latest
+    volumes:
+      - /proc:/hostfs/proc:ro 
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro 
+      - /:/hostfs:ro 
+    network_mode: "host"
+    depends_on:
+      - logstash-service
+      - elasticsearch-service
 
   kibana-service:
     image: kibana:latest
