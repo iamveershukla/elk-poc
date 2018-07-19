@@ -1,9 +1,10 @@
 # Overview
 This repository contains an implementation of the Elastic Stack.  
-- **E**lasticsearch
-- **L**ogstash
-- **K**ibana
-- Beats
+- Elasticsearch
+- Logstash
+- Kibana
+- Filebeat
+- Metricbeat
 
 # Instructions
 1. [Download, Install and Run Docker](https://docs.docker.com/engine/installation/) using the instructions appropriate to your operating system.
@@ -38,24 +39,36 @@ docker build -t elasticsearch .
 cd ../kibanaDocker
 docker build -t kibana . 
 ```
-9. Start the elk-poc stack
+
+9. Start the spring-petclinic application
+```bash
+cd ../spring-petclinic
+docker-compose up &
+```
+10. Start the elk-poc stack
 ```bash
 cd ..
 docker-compose up &
 ```
 
-10. Check the status of the running containers for elk-poc stack
+11. Check the status of the running containers for elk-poc stack
 ```bash
 cd ..
 docker ps -a
 ```
-11. Browse to http://localhost:8085/, this will display the home page of petclinic application.  Application logs from the petclinic application will be automatically forwarded to the Logstash server, where the records will be parsed and sent to Elasticsearch for indexing, they will also be written to standard output so they appear in the console window.
+12. Browse to http://localhost:8085/, this will display the home page of petclinic application.  Application logs from the petclinic application will be automatically forwarded to the Logstash server, where the records will be parsed and sent to Elasticsearch for indexing, they will also be written to standard output so they appear in the console window.
 
-12. You can search Elasticsearch directly via its REST API.  Browse to http://localhost:9200/petclinic/_search?q=*. If you are prompted to login, use the default credentials, username: _elastic_, password: _changeme_. Note: by default, only 10 records will be returned, the search behavior is controlled via additional parameters to the search API.
+13. You can search Elasticsearch directly via its REST API.  Browse to http://localhost:9200/petclinic/_search?q=*. If you are prompted to login, use the default credentials, username: elastic, password: changeme. Note: by default, only 10 records will be returned, the search behavior is controlled via additional parameters to the search API.
 
-13. You can search Elasticsearch visually, using Kibana. Browse to http://localhost:5601, when prompted to login, use the default credentials, username: _elastic_, password: _changeme_. You will land in the Management section, where you must configure an index pattern, this is where you will tell Kibana which Elasticsearch index to use, enter petclinic for the index name and then click the _Create_ button. Upon successful configuration, you will see all of the fields that are searchable in the _elk-poc_ index.
+14. Once the ELK stack starts up you can list all indices in elasticsearch using: http://localhost:9200/_cat/indices?v&pretty
 
-14. To shutdown the elk-poc stack, press `Ctrl-c` in the console window.
+15. You can search Elasticsearch visually, using Kibana. Browse to http://localhost:5601, when prompted to login, use the default credentials, username: elastic, password: changeme. 
+
+16. Go to Management section, where you must configure an index pattern, this is where you will tell Kibana which Elasticsearch index to use.
+Enter petclinic-* for the index name and then click the _Create_ button. 
+Enter metricbeat-* for the index name and then click the _Create_ button. 
+After successful configuration, you will see all of the fields that are searchable in the metricbeat-* and petclinic-* Kibana indices.
+
 
 
 
