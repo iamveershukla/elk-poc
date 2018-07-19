@@ -1,0 +1,23 @@
+heartbeat.monitors:
+- type: http
+  schedule: '@every 5s'
+  urls: ["http://localhost:8085"]
+  check.request.method: HEAD
+  check.response.status: 200
+
+output.elasticsearch:
+  hosts: ['localhost:9200']
+  username: elastic
+  password: changeme
+
+setup.kibana:
+  host: "localhost:5601"
+  protocol: "http"
+  username: "elastic"
+  password: "changeme"
+
+setup.dashboards:
+  setup.dashboards.enabled: true
+  setup.dashboards.beat: heartbeat
+  setup.dashboards.index: heartbeat-*
+
