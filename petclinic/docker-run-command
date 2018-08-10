@@ -1,0 +1,2 @@
+docker run -d --name=spring-petclinic -v /var/log/petclinic:/var/log/petclinic spring-petclinic
+

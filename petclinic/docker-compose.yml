@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  petclinic-service:
+    image: spring-petclinic:latest
+    ports:
+      - 8085:8085
+    volumes:
+      - /var/log/petclinic:/var/log/petclinic
+
+  nginx-service:
+    image: nginx:latest
+    ports:
+      - 443:443
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+    depends_on:
+      - petclinic-service
+    links:
+      - petclinic-service:petclinic-service
+
+
